@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Caja con tapa y línea vertical</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lobster"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif; /* Cambiar la fuente del texto */
+        transition: background-color 1s; /* Transición para el cambio de color de fondo */
+      }
+      #container {
+        width: 300px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative; /* Añadido para permitir posicionamiento absoluto */
+      }
+      .regalo {
+        position: absolute; /* Añadido para posicionamiento absoluto */
+        bottom: 0; /* Comenzar desde abajo */
+        width: 100%;
+        height: 100%;
+        display: flex; /* Añadido para centrar horizontalmente */
+        justify-content: center; /* Añadido para centrar horizontalmente */
+        align-items: center; /* Añadido para centrar verticalmente */
+        flex-direction: column; /* Nuevo: Alinear elementos en columna */
+      }
+      .tapa {
+        width: 100%;
+        height: 70px; /* Altura de la tapa */
+        background-color: #ffffff; /* Cambiar color de la tapa aquí */
+        border-bottom: 2px solid #000;
+        position: relative;
+        border: 2px solid #000;
+        transition: transform 1s, opacity 1s; /* Transición para la rotación y desaparición */
+        transform-origin: top right; /* Cambiar el punto de origen de la rotación */
+      }
+      .linea-tapa {
+        width: 30%;
+        height: 100%;
+        background-color: #ff0000; /* Cambiar color de la línea aquí */
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+      }
+      .caja {
+        position: absolute; /* Añadido para posicionamiento absoluto */
+        bottom: 0; /* Comenzar desde abajo */
+        width: 80%;
+        height: calc(
+          100% - 20px
+        ); /* La altura de la caja menos la altura de la tapa */
+        border: 2px solid #000;
+        position: relative;
+        background-color: #ffffff; /* Cambiar color de la caja aquí */
+        display: flex; /* Añadido para centrar horizontalmente */
+        justify-content: center; /* Añadido para centrar horizontalmente */
+        align-items: center; /* Añadido para centrar verticalmente */
+        transition: transform 1s, opacity 1s; /* Transición para la rotación y desaparición */
+        transform-origin: top right; /* Cambiar el punto de origen de la rotación */
+      }
+      .linea-caja {
+        width: 30%;
+        height: 100%;
+        background-color: #ff0000; /* Cambiar color de la línea aquí */
+        border-left: 2px solid #000;
+        border-right: 2px solid #000;
+      }
+      .texto {
+        margin-top: 20px;
+        font-size: 20px;
+        color: #333; /* Color inicial del texto */
+        animation: cambioColor 3s infinite; /* Animación de cambio de color */
+      }
+      @keyframes cambioColor {
+        0% {
+          color: #333;
+        } /* Color inicial */
+        50% {
+          color: #ff0000;
+        } /* Color intermedio */
+        100% {
+          color: #e8ba13;
+        } /* Color final */
+      }
+
+      .r1 {
+        z-index: 5;
+      }
+
+      .r2 {
+        z-index: 4;
+        width: 80%;
+        height: 90%;
+      }
+      .r3 {
+        z-index: 3;
+        width: 63%;
+        height: 80%;
+      }
+      .r4 {
+        z-index: 2;
+        width: 50%;
+        height: 53%;
+      }
+      .r5 {
+        z-index: 1;
+        width: 40%;
+        height: 40%;
+      }
+
+
+      .emi {
+        border: 2px solid #ffffff; /* Color del borde */
+        box-shadow: 0 0 3px #ffffff, 0 0 6px #ffffff, 0 0 9px #ffffff, 0 0 12px #ffffff, 0 0 15px #ffffff, 0 0 18px #ffffff, 0 0 21px #ffffff; /* Efecto de emisión suavizado */
+      }
+
+
+      #tarjeta {
+        display: none;;
+        width: 70vw; /* El 80% del ancho de la ventana del navegador */
+        height: 70vh; /* El 80% de la altura de la ventana del navegador */
+        border: 2px solid #000;
+        border-radius: 20px; /* Bordes curvos */
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+        background-color: #f0f0f0;
+       /* Agregar efecto de sombra más pronunciado */
+       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 12px 40px 0 rgba(0, 0, 0, 0.19); /* Horizontal, Vertical, Blur, Spread, Color */
+      }
+
+      #tarjeta img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .container_img {
+        padding: 30px; /* Padding mayor */
+        border: 2px solid pink; /* Borde rosado */
+        border-radius: 15px; /* Bordes curvos */
+      }
+
+      /* Estilo para el texto romántico */
+      .texto_romantico {
+        font-family: "Lobster", cursive;
+        font-size: 24px;
+        color: #ff4081; /* Rosa */
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="regalo r1" id="regalo1" onclick="abrirRegalo('regalo1','#111010')">
+        <div class="tapa" id="taparegalo1" style="background-color: #ffffff; border-color: #000000;">
+          <div class="linea-tapa" style="background-color: #dc0f79; border-color: #000;"></div>
+        </div>
+        <div class="caja" id="cajaregalo1" style="background-color: #ffffff; border-color: #000;">
+          <div class="linea-caja"  style="background-color: #dc0f79; border-color: #000;"></div>
+        </div>
+      </div>
+      <div class="regalo r2" id="regalo2" onclick="abrirRegalo('regalo2','#831392')">
+        <div class="tapa emi" id="taparegalo2" style="background-color: #e41717;">
+          <div class="linea-tapa" style="background: linear-gradient(to right, #ffd700 0%, #e6b200 50%, #ffd700 100%); border-color: #ffffff;"></div>
+        </div>
+        <div class="caja emi" id="cajaregalo2" style="background-color: #e41717;">
+          <div class="linea-caja" style="background: linear-gradient(to right, #ffd700 0%, #e6b200 50%, #ffd700 100%);  border-color: #ffffff;"></div>
+        </div>
+      </div>
+      <div class="regalo r3" id="regalo3" onclick="abrirRegalo('regalo3','#0c0d5b')">
+        <div class="tapa" id="taparegalo3" style="background-color: #6365ed; border-color: #000;">
+          <div class="linea-tapa" style="background-color: #ffffff; border-color: #000;"></div>
+        </div>
+        <div class="caja" id="cajaregalo3" style="background-color: #6365ed; border-color: #000;">
+          <div class="linea-caja" style="background-color: #ffffff; border-color: #000;"></div>
+        </div>
+      </div>
+      <div class="regalo r4" id="regalo4" onclick="abrirRegalo('regalo4','#ffd700')">
+        <div class="tapa emi" id="taparegalo4" style="background-color: #19a6e2; ">
+          <div class="linea-tapa" style="background: linear-gradient(to right, #ffd700 0%, #e6b200 50%, #ffd700 100%);  border-color: #ffffff;"></div>
+        </div>
+        <div class="caja emi" id="cajaregalo4" style="background-color: #19a6e2;">
+          <div class="linea-caja" style="background: linear-gradient(to right, #ffd700 0%, #e6b200 50%, #ffd700 100%);  border-color: #ffffff;"></div>
+        </div>
+      </div>
+      <div class="regalo r5" id="regalo5" onclick="abrirRegalo('regalo5','#ee52af')">
+        <div class="tapa" id="taparegalo5" style="background-color: #f41472; border-color: #000;">
+          <div class="linea-tapa" style="background-color: #ee52af; border-color: #000;"></div>
+        </div>
+        <div class="caja" id="cajaregalo5" style="background-color: #f41472; border-color: #000;">
+          <div class="linea-caja" style="background-color: #ee52af; border-color: #000;"></div>
+        </div>
+      </div>
+    </div>
+   </div>
+    <div class="texto" id="texto">Presiona para abrir</div>
+
+    <div id="tarjeta">
+      <p class="texto_romantico">
+        "Eres la luz que ilumina mi camino, el sueño del que nunca quiero
+        despertar."
+      </p>
+      <div class="container_img">
+        <img src="./Collage.png" alt="Imagen" />
+      </div>
+    </div>
+
+
+    <script>
+      function abrirRegalo(regaloId, colorFondo) {
+        var tapa = document.getElementById("tapa" + regaloId);
+        var caja = document.getElementById("caja" + regaloId);
+
+        tapa.style.transform = "rotate(45deg)"; /* Rotar la tapa 45 grados */
+        tapa.style.opacity = "0"; /* Hacer que la tapa desaparezca */
+
+        // Esperar un segundo antes de aplicar la transición a la caja
+        setTimeout(function () {
+          caja.style.transform =
+            "rotate(-45deg)"; /* Hacer que la caja desaparezca */
+          caja.style.opacity = "0"; /* Hacer que la caja desaparezca */
+
+          // Generar un color aleatorio en formato hexadecimal
+          var colorAleatorio =
+            "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+          // Cambiar el color de fondo de la página
+          document.body.style.backgroundColor =
+              colorFondo; /* Cambiar a un color */
+
+          // Si el ID del regalo es "regalo5", mostrar la tarjeta correspondiente
+          if (regaloId === "regalo5") {
+            var tarjeta = document.getElementById("tarjeta");
+            tarjeta.style.opacity = "0"; // Inicialmente, la tarjeta está invisible
+            tarjeta.style.transform = "translateY(-20px)"; // La tarjeta se moverá ligeramente hacia arriba
+
+            tarjeta.style.display = "block"; // Mostrar la tarjeta
+            
+            // Hacer que la tarjeta aparezca lentamente con un ligero efecto de desvanecimiento
+            setTimeout(function () {
+                tarjeta.style.opacity = "1";
+                tarjeta.style.transition = "opacity 1s ease, transform 1s ease"; // Agregar transición suave
+                tarjeta.style.transform = "translateY(0)"; // La tarjeta vuelve a su posición original
+            }, 500); // Esperar un segundo después de que la caja desaparezca
+
+              document.getElementById("texto").style.display = "none";
+              document.getElementById("container").style.display = "none";
+            }
+          }, 500);
+
+        // Desaparecer el regalo después de la animación
+        caja.addEventListener("transitionend", function () {
+          var regalo = document.getElementById(regaloId);
+          regalo.style.display = "none";
+        });
+
+        
+      }
+    </script>
+  </body>
+</html>

@@ -8,6 +8,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Middleware para servir archivos estáticos desde la carpeta "public"
+app.use(express.static('public'));
+
 // Archivo para guardar los datos
 const DATA_FILE = 'data.json';
 
@@ -56,13 +59,13 @@ app.use((req, res, next) => {
 let { counter, usedCodes, showButton } = readData();
 
 // Almacenamiento de códigos y registro de códigos utilizados
-const codes = ['1234', '5678', '9012', '3456', '7890'];
+const codes = ['1234', '5246', '9012', '1015', '1404'];
 const pagesToShow = {
-  '1234': 'pagina1.html',
-  '5678': 'pagina2.html',
-  '9012': 'pagina3.html',
-  '3456': 'pagina4.html',
-  '7890': 'pagina5.html'
+  '1234': 'regalo1.html',
+  '5246': 'regalo2.html',
+  '9012': 'regalo3.html',
+  '1015': 'regalo4.html',
+  '1404': 'regalo5.html'
 };
 
 // Ruta para servir el formulario HTML
