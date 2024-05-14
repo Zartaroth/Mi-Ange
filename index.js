@@ -49,7 +49,9 @@ app.post('/submit', (req, res) => {
 
     } else {
       // Si el código ya ha sido utilizado
-      res.status(400).json({ error: 'El código ya ha sido utilizado.' });
+      // res.status(400).json({ error: 'El código ya ha sido utilizado.' });
+      const nextPage = pagesToShow[codigo];
+      res.status(200).json({ nextPage, showButton: false });
     }
 
   } else {
