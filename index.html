@@ -43,8 +43,71 @@
         transform: translateY(-10px);
       }
 
+      form.invalid {
+        animation: shake 0.5s, glitch 0.5s;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        50% {
+          transform: translateX(5px);
+        }
+        75% {
+          transform: translateX(-5px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes glitch {
+        0% {
+          background: linear-gradient(
+            45deg,
+            #fff,
+            #ff6384
+          ); /* Gradiente de blanco a rojo */
+        }
+        25% {
+          background: linear-gradient(
+            90deg,
+            #ff6384 0%,
+            #ff6384 20%,
+            #fff 20%,
+            #fff 40%,
+            #ff6384 40%,
+            #ff6384 60%,
+            #fff 60%,
+            #fff 80%,
+            #ff6384 80%,
+            #ff6384 100%
+          ); /* Gradiente con más cambios */
+        }
+        50% {
+          background: linear-gradient(
+            135deg,
+            #fff,
+            #ff6384
+          ); /* Gradiente de blanco a rojo */
+        }
+        100% {
+          background: linear-gradient(
+            270deg,
+            #ff6384 0%,
+            #ff6384 50%,
+            #fff 50%,
+            #fff 100%
+          ); /* Gradiente con menos cambios */
+        }
+      }
+
       h2 {
-        font-size: 24px;
+        font-size: 20px;
         color: #333;
         text-align: center;
         margin-bottom: 30px;
@@ -91,24 +154,84 @@
         font-size: 14px;
         color: #666;
       }
+
+      .hide {
+        display: none;
+      }
+
+      /* Estilo para el botón "Mi Botón" */
+      input[type="submit"].special {
+        margin-top: 20px;
+        background-color: #ffdf00; /* Color amarillo dorado */
+        color: #333; /* Color de texto */
+        font-weight: bold; /* Texto en negrita */
+        border: 2px solid #ffdf00; /* Borde dorado */
+        box-shadow: 0px 8px 15px rgba(255, 223, 0, 0.3); /* Sombra */
+        transition: all 0.3s ease; /* Transición suave */
+      }
+
+      input[type="submit"].special:hover {
+        background-color: #ffd700; /* Color amarillo dorado más brillante al pasar el ratón */
+        box-shadow: 0px 12px 20px rgba(255, 223, 0, 0.6); /* Sombra más grande al pasar el ratón */
+      }
     </style>
   </head>
   <body>
     <!-- Contenedor para la animación de partículas -->
     <div id="particles-js"></div>
 
-    <form action="/submit" method="post">
-      <h2>Ingresa un código especial</h2>
+    <form id="codigoForm" action="/submit" method="post">
+      <h2>Ingresa un código encontrado Mi Amor</h2>
       <input
         type="text"
         name="codigo"
+        id="codigoInput"
         placeholder="Ingresa tu código aquí"
         required
       />
-      <input type="submit" value="Enviar" />
+      <input type="submit" value="Verificar" />
+      <!-- Botón desbloqueado con clase "special" -->
+      <input
+        id="submitBtn"
+        type="submit"
+        class="hide special"
+        value="Mi Botón"
+      />
     </form>
 
     <footer>HECHO CON ❤️ POR TU DAV</footer>
+
+    <script>
+      const form = document.getElementById("codigoForm");
+      const submitBtn = document.getElementById("submitBtn");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const codigo = document.getElementById("codigoInput").value;
+        const response = await fetch("/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ codigo }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          window.location.href = data.nextPage;
+          if (data.showButton) {
+            submitBtn.classList.remove("hide");
+          }
+        } else {
+          form.classList.add("invalid");
+          setTimeout(() => {
+            form.classList.remove("invalid");
+          }, 500);
+        }
+      });
+    </script>
 
     <!-- Configuración de particles.js -->
     <script>

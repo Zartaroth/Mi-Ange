@@ -5,9 +5,10 @@
   "main": "index.js",
   "author": "alphasec",
   "license": "MIT",
-   "dependencies": {
+  "dependencies": {
+    "express": "^4.19.2"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node ./index.js"
   }
 }
