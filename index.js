@@ -17,7 +17,7 @@ function readData() {
     const data = fs.readFileSync(DATA_FILE, 'utf8');
     return JSON.parse(data);
   } catch (err) {
-    return { counter: -1, usedCodes: [] }; // Si el archivo no existe, devuelve valores predeterminados
+    return { counter: -1, usedCodes: [], showButton: false }; // Si el archivo no existe, devuelve valores predeterminados
   }
 }
 
@@ -31,6 +31,7 @@ let serverStarted = false;
 
 // Middleware para reiniciar el archivo data.json al iniciar el servidor
 app.use((req, res, next) => {
+
   if (!serverStarted) { // Si el servidor no se ha iniciado aún
     serverStarted = true; // Marcar que el servidor se ha iniciado
     // Eliminar el archivo data.json si existe
@@ -45,14 +46,14 @@ app.use((req, res, next) => {
     // Si el archivo no existe después de eliminarlo, crearlo con valores predeterminados
     if (!fs.existsSync(DATA_FILE)) {
       console.log('Creando archivo data.json con valores predeterminados.');
-      saveData({ counter: -1, usedCodes: [] });
+      saveData({ counter: -1, usedCodes: [], showButton: false });
     }
   }
   next(); // Pasar al siguiente middleware
 });
 
 // Leer los datos iniciales
-let { counter, usedCodes } = readData();
+let { counter, usedCodes, showButton } = readData();
 
 // Almacenamiento de códigos y registro de códigos utilizados
 const codes = ['1234', '5678', '9012', '3456', '7890'];
@@ -85,17 +86,18 @@ app.post('/submit', (req, res) => {
       console.log(`Código válido insertado: ${codigo}`);
 
       // Verificar si el contador es igual a 4 para mostrar el botón
-      if (counter === 4) {
-        // Redirigir a la página correspondiente y mostrar el botón
-        const nextPage = pagesToShow[codigo];
-        saveData({ counter, usedCodes });
-        res.status(200).json({ nextPage, showButton: true });
-      } else {
-        // Redirigir a la página correspondiente sin mostrar el botón
-        const nextPage = pagesToShow[codigo];
-        saveData({ counter, usedCodes });
-        res.status(200).json({ nextPage, showButton: false });
+      if (counter === 4 && !showButton) {
+        // Actualizar el estado del botón a mostrar
+        showButton = true;
+        // Guardar los datos actualizados en el archivo
+        saveData({ counter, usedCodes, showButton });
       }
+
+      const nextPage = pagesToShow[codigo];
+      saveData({ counter, usedCodes, showButton });
+
+      // Redirigir a la página correspondiente
+      res.status(200).json({ nextPage, showButton });
 
     } else {
       // Si el código ya ha sido utilizado
@@ -112,6 +114,12 @@ app.post('/submit', (req, res) => {
 // Ruta para obtener el valor actual del contador
 app.get('/counter', (req, res) => {
   res.json({ counter });
+});
+
+
+// Ruta para obtener el valor actual de ShowButton
+app.get('/showButton', (req, res) => {
+  res.json({ showButton });
 });
 
 // Iniciar el servidor en el puerto 3000

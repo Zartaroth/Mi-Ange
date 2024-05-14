@@ -202,6 +202,19 @@
     <footer>HECHO CON ❤️ POR TU DAV</footer>
 
     <script>
+      // Hacer una solicitud al servidor para obtener el estado de showButton
+      fetch("/showButton")
+        .then((response) => response.json())
+        .then((data) => {
+          const showButton = data.showButton;
+          if (showButton) {
+            document.getElementById("submitBtn").classList.remove("hide");
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+
+    <script>
       const form = document.getElementById("codigoForm");
       const submitBtn = document.getElementById("submitBtn");
 
