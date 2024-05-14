@@ -26,11 +26,27 @@ function saveData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
+// Variable para rastrear si el servidor se ha iniciado
+let serverStarted = false;
+
 // Middleware para reiniciar el archivo data.json al iniciar el servidor
 app.use((req, res, next) => {
-  // Eliminar el archivo data.json si existe
-  if (fs.existsSync(DATA_FILE)) {
-    fs.unlinkSync(DATA_FILE);
+  if (!serverStarted) { // Si el servidor no se ha iniciado aún
+    serverStarted = true; // Marcar que el servidor se ha iniciado
+    // Eliminar el archivo data.json si existe
+    if (fs.existsSync(DATA_FILE)) {
+      try {
+        fs.unlinkSync(DATA_FILE);
+        console.log('Archivo data.json eliminado al iniciar el servidor.');
+      } catch (error) {
+        console.error('Error al eliminar el archivo data.json al iniciar el servidor:', error);
+      }
+    }
+    // Si el archivo no existe después de eliminarlo, crearlo con valores predeterminados
+    if (!fs.existsSync(DATA_FILE)) {
+      console.log('Creando archivo data.json con valores predeterminados.');
+      saveData({ counter: -1, usedCodes: [] });
+    }
   }
   next(); // Pasar al siguiente middleware
 });
@@ -64,6 +80,9 @@ app.post('/submit', (req, res) => {
       // Incrementar el contador y marcar el código como utilizado
       counter++;
       usedCodes.push(codigo);
+
+      // Log para registrar el código válido
+      console.log(`Código válido insertado: ${codigo}`);
 
       // Verificar si el contador es igual a 4 para mostrar el botón
       if (counter === 4) {
