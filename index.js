@@ -26,6 +26,15 @@ function saveData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
+// Middleware para reiniciar el archivo data.json al iniciar el servidor
+app.use((req, res, next) => {
+  // Eliminar el archivo data.json si existe
+  if (fs.existsSync(DATA_FILE)) {
+    fs.unlinkSync(DATA_FILE);
+  }
+  next(); // Pasar al siguiente middleware
+});
+
 // Leer los datos iniciales
 let { counter, usedCodes } = readData();
 
