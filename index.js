@@ -63,7 +63,7 @@ const pagesToShow = {
   '5246': 'regalo2.html',
   '9012': 'regalo3.html',
   '1015': 'regalo4.html',
-  '1404': 'libro.pdf'
+  '1404': 'libro.html'
 };
 
 // Ruta para servir el formulario HTML
@@ -128,6 +128,13 @@ app.get('/showButton', (req, res) => {
   // Leer los datos iniciales
   let { counter, usedCodes, showButton } = readData();
   res.json({ showButton });
+});
+
+// Ruta para manejar la solicitud del botón especial
+app.post('/specialButton', (req, res) => {
+  // Define la URL a la que deseas redirigir
+  const redirectUrl = 'Carta.html'; // Cambia esta URL a donde desees redirigir
+  res.status(200).json({ redirectUrl });
 });
 
 // Iniciar el servidor en el puerto 3000

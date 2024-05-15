@@ -3,56 +3,398 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Libro</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caveat&display=swap"
+    />
+    <title>Carta</title>
     <style>
+      /* reset css */
+      * {
+        min-width: 0;
+        font: inherit;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      img,
+      video,
+      svg {
+        display: block;
+        height: auto;
+        max-width: 100%;
+      }
+
       body {
         margin: 0;
-        padding: 0;
+        min-height: 100dvh;
+      }
+
+      h1,
+      h2,
+      h3 {
+        text-wrap: balance;
+      }
+
+      p {
+        text-wrap: pretty;
+      }
+
+      /* styles */
+      body {
+        background-color: #fad7df;
+      }
+
+      main {
         display: flex;
+        flex-direction: column;
+        gap: 3rem;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-color: #f0f0f0;
       }
 
-      .book-content {
-        max-width: 80%;
-        height: auto;
-      }
-
-      .book {
+      .container-letter {
         position: relative;
-        width: 40vw; /* Ancho del libro relativo al ancho de la ventana */
-        height: calc(
-          40vw * 0.6667
-        ); /* Alto del libro en relación al ancho, manteniendo la proporción 3:2 */
-        perspective: 1000px;
       }
 
-      .face-front,
-      .face-back {
+      .cover {
         position: absolute;
-        width: 100%;
+        border-left: 200px solid transparent;
+        border-right: 200px solid transparent;
+        border-top: 100px solid #fe3334;
+        border-bottom: 100px solid transparent;
+        transition: transform 0.75s;
+        transform-origin: top;
+      }
+
+      .card {
+        display: none; /* Ocultar la carta inicialmente */
+        flex-direction: column;
+        position: absolute;
+        padding: 1.5rem;
+        line-height: 2rem;
+        right: 5px;
+        z-index: -1;
+        width: 390px;
         height: 100%;
-        background-color: #ffffff; /* Color del frente y el dorso del libro */
-        border: 1px solid #000000; /* Borde del frente y el dorso del libro */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 0.75s;
+        background-color: #ffffff;
       }
 
-      .face-front {
-        transform: rotateY(0deg);
+      .card-title {
+        text-align: center;
+        font-family: "Great Vibes", cursive;
+        font-size: 36px;
+        font-weight: bold;
+        color: #ff3333; /* Color rojo romántico */
+        margin-bottom: 20px; /* Espacio inferior para separarlo del contenido */
       }
 
-      .face-back {
-        transform: rotateY(180deg);
+      .line {
+        border: none;
+        height: 2px; /* Grosor de la línea */
+        background-color: #ff2e63; /* Color de la línea (rosa) */
+        margin: 10px 0; /* Espacio alrededor de la línea */
+        width: 100%; /* Ancho completo */
+        opacity: 0.5; /* Opacidad para un aspecto suave */
+      }
+
+      .paper {
+        font-family: "Caveat", cursive;
+        font-size: 22px;
+        line-height: 1.6; /* Espaciado entre líneas */
+        text-align: justify; /* Justificar el texto */
+        padding: 0 20px; /* Añadir relleno a los lados */
+      }
+
+      .paper::first-letter {
+        font-size: 80px; /* Tamaño de fuente más grande */
+        line-height: 0.7; /* Espaciado entre líneas más reducido */
+        float: left; /* Hacer que la primera letra flote a la izquierda */
+        margin-right: 10px; /* Espacio a la derecha de la primera letra */
+        color: #fe3334; /* Color personalizado para la primera letra */
+      }
+
+      .highlighted-text {
+        text-align: center;
+        font-size: 80px; /* Tamaño de fuente más grande */
+        float: left; /* Hacer que la primera letra flote a la izquierda */
+        margin-right: 30px; /* Espacio a la derecha de la primera letra */
+        color: #fe3334; /* Color personalizado para la primera letra */
+
+        font-size: 1.2em; /* Ajustar el tamaño de fuente */
+        font-style: italic; /* Aplicar cursiva */
+        font-weight: bold; /* Aplicar negrita */
+      }
+
+      .letter {
+        position: relative; /* Agregar esta línea */
+        border-left: 200px solid #ff989e;
+        border-right: 200px solid #ff989e;
+        border-top: 100px solid transparent;
+        border-bottom: 100px solid #ff858a;
+      }
+
+      .heart {
+        display: none;
+        position: absolute;
+        top: 25%;
+        left: 46.5%;
+        margin: auto;
+        font-size: 3rem;
+        color: #fe3334;
+        animation: crecer 1s forwards;
+      }
+
+      @keyframes crecer {
+        0% {
+          scale: 1;
+          opacity: 1;
+        }
+        100% {
+          scale: 3;
+          opacity: 0;
+        }
+      }
+
+      .open-cover {
+        transform: rotateX(180deg);
+      }
+
+      .open-paper {
+        animation: openPaper 1.25s forwards;
+      }
+
+      @keyframes openPaper {
+        0% {
+          top: 0;
+          height: 100%;
+        }
+        10% {
+          top: 0;
+          height: 100%;
+        }
+        100% {
+          top: -180px;
+          height: 4050px;
+        }
+      }
+
+      .close-paper {
+        animation: closePaper 2s forwards;
+      }
+
+      @keyframes closePaper {
+        0% {
+          top: -180px;
+          height: 4050px;
+        }
+        25% {
+          top: -180px;
+          height: 4050px;
+        }
+        100% {
+          top: 0;
+          height: 100%;
+        }
+      }
+
+      .down-letter {
+        animation: bajarSobre 1.5s forwards;
+      }
+
+      @keyframes bajarSobre {
+        0% {
+          top: 0;
+        }
+        100% {
+          top: 3670px;
+        }
+      }
+
+      .up-letter {
+        animation: subirSobre 1.5s forwards;
+      }
+
+      @keyframes subirSobre {
+        0% {
+          top: 3670px;
+        }
+        100% {
+          top: 0px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="book-content">
-      <div class="book">
-        <div class="face-front"></div>
-        <div class="face-back"></div>
+    <main>
+      <div class="container-letter" id="containerLetter">
+        <div class="cover"></div>
+        <span class="heart">♥</span>
+        <div class="card">
+          <h1 class="card-title">Always and Forever</h1>
+          <!-- Línea -->
+          <hr class="line" />
+
+          <p class="paper" id="mainMessage">
+            Mi vida, quizás últimamente no te he escrito como antes, y espero no
+            pienses que es porque me olvidé de hacerlo... es completamente lo
+            contrario, es porque ahora quizás puedo decírtelo de frente, pero
+            jamás me olvidaré y cansaré de intentar hacerte saber con palabras
+            cuánto significas para mí.
+            <br /><br />
+            Ya son 3 Meses a tu lado (Casi 4 en realidad 👀) y poder estar
+            contigo ha sido lo mejor que me pudo pasar en mi vida, que llegues
+            de la nada y no pueda negarme a tí, que no pudiera controlar mis
+            sentimientos hacia tí, que todo se sintiese tan mágico al conocerte,
+            que todo fluyera tan natural... como si de verdad estaríamos
+            destinados a encontrarnos, todo contigo me hace pensar en lo
+            afortunado y feliz que me siento por estar a tu lado, tantos
+            momentos, tantas experiencias.. conocerte ah sido la mejor
+            casualidad, desde ese momento en que te ví y me pareciste tan Guapa,
+            tan inexplicable.
+            <br /><br />
+            Desde el recuerdo de nuestro primer beso, uno de los días más
+            felices en mi vida.. hasta ahora.. ahora que hicimos tantas cosas,
+            nos atrevimos a tantas cosas, tantas cosas que hemos aprendido uno
+            del otro y otras que seguimos mejorando... aunque estos 3 meses
+            (casi 4) ya son un buen tiempo, es aún un comienzo comparado a la
+            vida que nos espera.. y ver que en ese "corto" tiempo, fuimos tan
+            felices, me hace pensar en las cosas que están por venir. Aunque el
+            futuro sea impredecible y tenga sus altibajos, se que todo valdrán
+            la pena, por qué eres Tú, la chica de quien me enamoré perdidamente
+            y de quien sigo enamorándome más cada día, A veces me asusta pensar
+            en cuánto te amaré y el poder que tendrás sobre mí, pero también me
+            da una paz inmensa, porque de nuevo..
+          </p>
+          <span class="paper" id="mainMessage" style="color: #ff3333">
+            ERES TÚ.... MI CHICA INDICADA
+          </span>
+
+          <p class="paper" id="mainMessage">
+            Cada momento a tu lado es un tesoro para mí, desde las grandes
+            aventuras en pueblitos hasta los pequeños momentos cotidianos. Me
+            encanta cómo nos entendemos con solo una mirada, cómo nos sentimos
+            cómodos simplemente estando uno al lado del otro, cómo nos damos
+            cuenta de si algo nos pasa con solo mirarnos un poco, cómo nos
+            apoyamos mutuamente y cómo nos queremos con cada fibra de nuestro
+            ser. Me encanta la forma en que tu risa llena mi corazón, cómo tus
+            ojos brillan cuando me cuentas algo que te apasiona y cómo tu
+            presencia hace que todo parezca más brillante, como si el mundo
+            desapareciera y el tiempo se congelara cuando estamos juntos.
+            <br /><br />
+            A veces, simplemente me quedo mirándote y me maravillo de lo
+            afortunado que soy. Pienso en todos los momentos que hemos
+            compartido, desde las risas hasta las lágrimas, y no puedo evitar
+            sonreír. Eres mi ancla y mi inspiración, y no puedo esperar para
+            seguir construyendo recuerdos contigo, para seguir aprendiendo y
+            creciendo juntos. Eres mi hogar, el lugar donde siempre quiero
+            estar.
+            <br /><br />
+            Hay días en los que me sorprendo pensando en todas las pequeñas
+            cosas que amo de ti: la forma en que me miras cuando crees que no me
+            doy cuenta, cómo tomas mi mano en los momentos más inesperados, la
+            manera en que tu voz suaviza cualquier tormenta en mi mente. Son
+            esos pequeños detalles los que me recuerdan una y otra vez lo
+            increíble que es haberte encontrado. Cada día descubro una nueva
+            razón para amarte, y cada día mi amor por ti se hace más profundo y
+            más fuerte.
+            <br /><br />
+            Gracias por ser mi compañera de vida, mi confidente y mi mejor
+            amiga. Estoy increíblemente agradecido de tenerte a mi lado en este
+            viaje llamado vida, de tener a la persona más maravillosa que pueda
+            existir a mi lado.
+          </p>
+          <!-- Línea -->
+          <hr class="line" />
+          <p class="paper" id="mainMessage">
+            <span class="highlighted-text"
+              >♥️ Te quiero más de lo que las palabras pueden expresar, y
+              siempre lo haré.</span
+            >
+          </p>
+        </div>
+        <div class="letter"></div>
       </div>
-    </div>
+    </main>
+    <script>
+      const containerLetterElement = document.querySelector("#containerLetter");
+      const cardElement = document.querySelector(".card");
+      const coverElement = document.querySelector(".cover");
+      const paperElement = document.querySelector(".paper");
+      const heartElement = document.querySelector(".heart");
+      const letterElement = document.querySelector(".letter");
+
+      let isOpen = false;
+
+      cardElement.addEventListener("click", () => {
+        if (isOpen) {
+          closeLetter();
+        }
+      });
+
+      containerLetterElement.addEventListener("click", () => {
+        if (!isOpen) {
+          openLetter();
+        } else {
+          closeLetter();
+        }
+      });
+
+      card.addEventListener("click", () => {
+        if (!isOpen) {
+        } else {
+          closeLetter();
+        }
+      });
+
+      function openLetter() {
+        cardElement.style.display = "flex"; /* Mostrar la carta */
+        coverElement.classList.add("open-cover");
+        setTimeout(() => {
+          coverElement.style.zIndex = -1;
+          cardElement.classList.remove("close-paper");
+          cardElement.classList.add("open-paper");
+
+          coverElement.classList.remove("up-letter");
+          coverElement.classList.add("down-letter");
+          letterElement.classList.remove("up-letter");
+          letterElement.classList.add("down-letter");
+
+          heartElement.style.display = "block";
+          isOpen = true;
+        }, 750);
+      }
+
+      function closeLetter() {
+        cardElement.classList.remove("open-paper");
+        cardElement.classList.add("close-paper");
+        setTimeout(() => {
+          coverElement.style.zIndex = 0;
+          coverElement.classList.remove("open-cover");
+
+          coverElement.classList.remove("down-letter");
+          coverElement.classList.add("up-letter");
+          letterElement.classList.remove("down-letter");
+          letterElement.classList.add("up-letter");
+
+          heartElement.style.display = "none";
+          //   cardElement.style.display = "none"; /* Ocultar la carta */
+          isOpen = false;
+        }, 500);
+      }
+    </script>
   </body>
 </html>

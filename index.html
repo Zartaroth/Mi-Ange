@@ -160,7 +160,12 @@
       }
 
       /* Estilo para el botón "Mi Botón" */
-      input[type="submit"].special {
+      input[type="button"].special {
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
         margin-top: 20px;
         background-color: #ffdf00; /* Color amarillo dorado */
         color: #333; /* Color de texto */
@@ -170,7 +175,7 @@
         transition: all 0.3s ease; /* Transición suave */
       }
 
-      input[type="submit"].special:hover {
+      input[type="button"].special:hover {
         background-color: #ffd700; /* Color amarillo dorado más brillante al pasar el ratón */
         box-shadow: 0px 12px 20px rgba(255, 223, 0, 0.6); /* Sombra más grande al pasar el ratón */
       }
@@ -181,7 +186,7 @@
     <div id="particles-js"></div>
 
     <form id="codigoForm" action="/submit" method="post">
-      <h2>Ingresa un código encontrado Mi Amor</h2>
+      <h2>Mi Ange, podras descifrarlos todos?</h2>
       <input
         type="text"
         name="codigo"
@@ -192,10 +197,10 @@
       <input type="submit" value="Verificar" />
       <!-- Botón desbloqueado con clase "special" -->
       <input
-        id="submitBtn"
-        type="submit"
+        id="specialButton"
+        type="button"
         class="hide special"
-        value="Mi Botón"
+        value="❤️Lo Lograste Mi Amor!!❤️"
       />
     </form>
 
@@ -208,7 +213,7 @@
         .then((data) => {
           const showButton = data.showButton;
           if (showButton) {
-            document.getElementById("submitBtn").classList.remove("hide");
+            document.getElementById("specialButton").classList.remove("hide");
           }
         })
         .catch((error) => console.error("Error:", error));
@@ -216,7 +221,7 @@
 
     <script>
       const form = document.getElementById("codigoForm");
-      const submitBtn = document.getElementById("submitBtn");
+      const specialButton = document.getElementById("specialButton");
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -235,13 +240,31 @@
         if (response.ok) {
           window.location.href = data.nextPage;
           if (data.showButton) {
-            submitBtn.classList.remove("hide");
+            specialButton.classList.remove("hide");
           }
         } else {
           form.classList.add("invalid");
           setTimeout(() => {
             form.classList.remove("invalid");
           }, 500);
+        }
+      });
+
+      // Manejar el evento de clic en el botón especial
+      specialButton.addEventListener("click", async () => {
+        const response = await fetch("/specialButton", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          window.location.href = data.redirectUrl;
+        } else {
+          console.error("Error al procesar el botón especial");
         }
       });
     </script>
