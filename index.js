@@ -63,7 +63,7 @@ const pagesToShow = {
   '5246': 'regalo2.html',
   '9012': 'regalo3.html',
   '1015': 'regalo4.html',
-  '1404': 'regalo5.html'
+  '1404': 'libro.pdf'
 };
 
 // Ruta para servir el formulario HTML
