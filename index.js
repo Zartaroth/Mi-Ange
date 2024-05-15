@@ -55,8 +55,6 @@ app.use((req, res, next) => {
   next(); // Pasar al siguiente middleware
 });
 
-// Leer los datos iniciales
-let { counter, usedCodes, showButton } = readData();
 
 // Almacenamiento de códigos y registro de códigos utilizados
 const codes = ['1234', '5246', '9012', '1015', '1404'];
@@ -76,6 +74,9 @@ app.get('/', (req, res) => {
 // Ruta para manejar la solicitud del formulario
 app.post('/submit', (req, res) => {
   const { codigo } = req.body;
+
+  // Leer los datos iniciales
+  let { counter, usedCodes, showButton } = readData();
 
   // Verificar si el código está en la lista de códigos
   if (codes.includes(codigo)) {
@@ -116,12 +117,16 @@ app.post('/submit', (req, res) => {
 
 // Ruta para obtener el valor actual del contador
 app.get('/counter', (req, res) => {
+  // Leer los datos iniciales
+  let { counter, usedCodes, showButton } = readData();
   res.json({ counter });
 });
 
 
 // Ruta para obtener el valor actual de ShowButton
 app.get('/showButton', (req, res) => {
+  // Leer los datos iniciales
+  let { counter, usedCodes, showButton } = readData();
   res.json({ showButton });
 });
 
